@@ -1,0 +1,235 @@
+<!-- Camera Settings -->
+<div class="control-panel">
+    <h3>📹 Camera Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>RTSP URL:</label>
+            <input type="text" id="rtsp-url" placeholder="rtsp://admin:password@192.168.1.100:554/stream1">
+        </div>
+        <div class="form-group">
+            <label>FPS:</label>
+            <input type="number" id="fps" min="1" max="60" value="25">
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>🎯 Detection Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>YOLO Model:</label>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <select id="yolo-model" style="flex: 1;" onchange="checkModelDownload()">
+                    <option value="yolov8n.pt">YOLOv8 Nano (6MB, Fast)</option>
+                    <option value="yolov8s.pt">YOLOv8 Small (22MB, Balanced)</option>
+                    <option value="yolov8m.pt">YOLOv8 Medium (52MB, Good)</option>
+                    <option value="yolov8l.pt">YOLOv8 Large (87MB, Better)</option>
+                    <option value="yolov8x.pt">YOLOv8 XLarge (136MB, Best)</option>
+                </select>
+                <span id="model-status" style="font-size: 0.9em; color: #9ca3af;">Checking...</span>
+                <button id="download-model-btn" class="btn btn-secondary" onclick="downloadModel()" style="display: none; padding: 5px 10px; font-size: 0.8em;">
+                    📥 Download
+                </button>
+            </div>
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Models are downloaded automatically when needed. Green = Downloaded, Red = Not Downloaded
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Confidence Threshold:</label>
+            <input type="range" id="confidence" min="0.1" max="1.0" step="0.1" value="0.5">
+            <span id="confidence-value">0.5</span>
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                YOLO detection confidence (0.1-1.0, higher = more strict, recommended: 0.2-0.5)
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Use GPU:</label>
+            <select id="use-gpu">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Min Detection Area:</label>
+            <input type="number" id="min-area" min="100" max="5000" value="800">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Minimum object area in pixels (recommended: 800-2000 for vehicles)
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Blur Size:</label>
+            <input type="number" id="blur-size" min="1" max="50" value="10">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Morphological operation kernel size
+            </small>
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>🚗 Speed Detection Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Speed Limit (km/h):</label>
+            <input type="number" id="speed-limit" min="10" max="200" value="50">
+        </div>
+        <div class="form-group">
+            <label>Speed in MPH:</label>
+            <select id="speed-mph">
+                <option value="false">No (km/h)</option>
+                <option value="true">Yes (mph)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Min Speed Over Limit:</label>
+            <input type="number" id="min-speed-over" min="1" max="50" value="10">
+        </div>
+        <div class="form-group">
+            <label>Max Speed Over Limit:</label>
+            <input type="number" id="max-speed-over" min="50" max="300" value="150">
+        </div>
+        <div class="form-group">
+            <label>Min Time Difference:</label>
+            <input type="number" id="min-time-diff" min="0.1" max="5.0" step="0.1" value="0.5">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Minimum time between detection points (seconds)
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Max Time Difference:</label>
+            <input type="number" id="max-time-diff" min="1.0" max="10.0" step="0.1" value="5.0">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Maximum time between detection points (seconds)
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Min Track Length:</label>
+            <input type="number" id="min-track-length" min="10" max="1000" value="100">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Minimum pixels traveled to calculate speed (recommended: 50-200)
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Track Counter:</label>
+            <input type="number" id="track-counter" min="2" max="10" value="4">
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Minimum detection points before speed calculation
+            </small>
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>📍 Detection Zones</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Left to Right Enabled:</label>
+            <select id="l2r-enabled">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Right to Left Enabled:</label>
+            <select id="r2l-enabled">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>L2R Line Position (X):</label>
+            <input type="number" id="l2r-line-x" min="0" max="1920" value="600">
+        </div>
+        <div class="form-group">
+            <label>R2L Line Position (X):</label>
+            <input type="number" id="r2l-line-x" min="0" max="1920" value="1150">
+        </div>
+        <div class="form-group">
+            <label>Detection Area Top:</label>
+            <input type="number" id="detection-area-top" min="0" max="1080" value="300">
+        </div>
+        <div class="form-group">
+            <label>Detection Area Bottom:</label>
+            <input type="number" id="detection-area-bottom" min="0" max="1080" value="590">
+        </div>
+        <div class="form-group">
+            <label>Detection Area Left:</label>
+            <input type="number" id="detection-area-left" min="0" max="1920" value="100">
+        </div>
+        <div class="form-group">
+            <label>Detection Area Right:</label>
+            <input type="number" id="detection-area-right" min="0" max="1920" value="1820">
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>📏 Calibration Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>L2R Object Size (mm):</label>
+            <input type="number" id="cal-obj-mm-l2r" min="1000" max="10000" value="4127">
+        </div>
+        <div class="form-group">
+            <label>L2R Object Size (pixels):</label>
+            <input type="number" id="cal-obj-px-l2r" min="50" max="1000" value="700">
+        </div>
+        <div class="form-group">
+            <label>R2L Object Size (mm):</label>
+            <input type="number" id="cal-obj-mm-r2l" min="1000" max="10000" value="4127">
+        </div>
+        <div class="form-group">
+            <label>R2L Object Size (pixels):</label>
+            <input type="number" id="cal-obj-px-r2l" min="50" max="1000" value="700">
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>💾 Output Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Save Images:</label>
+            <select id="save-images">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Image Quality:</label>
+            <input type="range" id="image-quality" min="50" max="100" value="95">
+            <span id="image-quality-value">95</span>
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h3>🚙 Vehicle Settings</h3>
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Ignore YOLO Validation:</label>
+            <select id="ignore-yolo-validation">
+                <option value="false">No - Only log YOLO detected vehicles</option>
+                <option value="true">Yes - Log all moving objects</option>
+            </select>
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                When enabled, logs all moving objects regardless of YOLO detection
+            </small>
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Vehicle Classes (one per line):</label>
+            <textarea id="vehicle-classes" rows="6" style="width: 100%; background: #374151; border: 1px solid #4b5563;
+             color: #e5e7eb; padding: 10px; border-radius: 4px; resize: vertical;" 
+             placeholder="car&#10;truck&#10;bus&#10;motorcycle&#10;person&#10;bicycle">
+            </textarea>
+            <small style="color: #9ca3af; display: block; margin-top: 5px;">
+                Add vehicle types that YOLO should recognize (one per line)
+            </small>
+        </div>
+    </div>
+</div>
+
+
+
+<button class="btn btn-primary" onclick="updateConfig()">💾 Apply All Settings</button> 

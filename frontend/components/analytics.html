@@ -1,0 +1,102 @@
+<!-- Analytics Tab -->
+<div class="control-panel">
+    <h3>📊 Speed Camera Analytics</h3>
+    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+        <label for="time-filter">⏰ Time Filter:</label>
+        <select id="time-filter" onchange="refreshGraphs()" style="padding: 5px; background: #374151; color: white; border: 1px solid #4b5563; border-radius: 4px;">
+            <option value="all">All Time</option>
+            <option value="hour">Last Hour</option>
+            <option value="3hour">Last 3 Hours</option>
+            <option value="day">Last Day</option>
+            <option value="week">Last Week</option>
+        </select>
+        <button class="btn btn-secondary" onclick="refreshGraphs()">🔄 Refresh Data</button>
+        <button class="btn btn-secondary" onclick="exportAnalytics()">📈 Export Analytics</button>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+    <div class="control-panel">
+        <h4>📈 Average Speed</h4>
+        <div style="height: 250px; position: relative;">
+            <canvas id="speedTimeChart"></canvas>
+        </div>
+    </div>
+    <div class="control-panel">
+        <h4>📊 Speed Distribution</h4>
+        <div style="height: 250px; position: relative;">
+            <canvas id="speedDistChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+    <div class="control-panel">
+        <h4>🚗 Vehicle Types</h4>
+        <div style="height: 200px; position: relative;">
+            <canvas id="vehicleTypeChart"></canvas>
+        </div>
+    </div>
+    <div class="control-panel">
+        <h4>🎨 Vehicle Colors</h4>
+        <div style="height: 200px; position: relative;">
+            <canvas id="vehicleColorChart"></canvas>
+        </div>
+    </div>
+    <div class="control-panel">
+        <h4>↔️ Direction Analysis</h4>
+        <div style="height: 200px; position: relative;">
+            <canvas id="directionChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h4>⏰ Hourly Activity</h4>
+    <div style="height: 250px; position: relative;">
+        <canvas id="hourlyChart"></canvas>
+    </div>
+</div>
+
+<div class="control-panel">
+    <h4>📋 Statistics Summary</h4>
+    <div id="stats-summary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <!-- Stats will be loaded here -->
+    </div>
+</div>
+
+<div class="control-panel">
+    <h4>📊 Detection Data Table</h4>
+    <div style="margin-bottom: 10px;">
+        <button class="btn btn-secondary" onclick="refreshDataTable()">🔄 Refresh Table</button>
+        <button class="btn btn-secondary" onclick="exportTableData()">📥 Export CSV</button>
+        <span style="margin-left: 15px;">
+            Show: 
+            <select id="table-rows" onchange="refreshDataTable()" style="padding: 3px; background: #374151; color: white; border: 1px solid #4b5563; border-radius: 4px;">
+                <option value="50">50 rows</option>
+                <option value="100" selected>100 rows</option>
+                <option value="200">200 rows</option>
+                <option value="all">All rows</option>
+            </select>
+        </span>
+    </div>
+    <div id="data-table-container" style="max-height: 400px; overflow-y: auto; border: 1px solid #4b5563; border-radius: 6px;">
+        <table id="data-table" style="width: 100%; border-collapse: collapse; font-size: 0.85em;">
+            <thead style="background: #374151; position: sticky; top: 0;">
+                <tr>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Time</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Type</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Color</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Direction</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Speed (km/h)</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Speed (mph)</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Confidence</th>
+                    <th style="border: 1px solid #4b5563; padding: 8px; text-align: left;">Image</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <!-- Table data will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div> 

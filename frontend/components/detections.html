@@ -1,0 +1,64 @@
+<div class="control-panel">
+    <h3>🚨 Speed Detections & Violations</h3>
+    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="refreshDetections()">🔄 Refresh</button>
+        <button class="btn btn-secondary" onclick="exportCSV()">📊 Export CSV</button>
+        <button class="btn btn-secondary" onclick="viewAllImages()">🖼️ View All Images</button>
+        <button class="btn btn-danger" onclick="cleanupOldFiles()">🗑️ Cleanup Old Files</button>
+        
+        <div style="margin-left: 20px; display: flex; align-items: center; gap: 10px; border-left: 1px solid #374151; padding-left: 15px;">
+            <button class="btn btn-primary" onclick="selectAll()" style="font-size: 0.9em; padding: 5px 10px;">Select All</button>
+            <button class="btn btn-secondary" onclick="deselectAll()" style="font-size: 0.9em; padding: 5px 10px;">Deselect All</button>
+            <button class="btn btn-danger" onclick="deleteSelected()" id="delete-selected-btn" disabled style="font-size: 0.9em; padding: 5px 10px;">🗑️ Delete Selected</button>
+            <span id="selection-count" style="color: #9ca3af; font-size: 0.9em;">0 selected</span>
+        </div>
+        
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="violations-only" onchange="toggleViolationsFilter()" style="transform: scale(1.2);">
+            <label for="violations-only" style="color: #ef4444; font-weight: 500;">🚨 Show Violations Only</label>
+        </div>
+    </div>
+</div>
+    
+    <div class="control-panel" style="margin-bottom: 20px;">
+        <h4>Filters</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div class="form-group">
+                <label>Object Type:</label>
+                <select id="filter-object-type" onchange="applyFilters()">
+                    <option value="">All Types</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Direction:</label>
+                <select id="filter-direction" onchange="applyFilters()">
+                    <option value="">All Directions</option>
+                    <option value="L2R">Left to Right</option>
+                    <option value="R2L">Right to Left</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Speed Range:</label>
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <input type="number" id="filter-speed-min" placeholder="Min" min="0" max="200" style="width: 70px; padding: 5px; border: 1px solid #374151; border-radius: 4px; background: #1f2937; color: #e5e7eb;" onchange="applyFilters()">
+                    <span style="color: #9ca3af;">-</span>
+                    <input type="number" id="filter-speed-max" placeholder="Max" min="0" max="200" style="width: 70px; padding: 5px; border: 1px solid #374151; border-radius: 4px; background: #1f2937; color: #e5e7eb;" onchange="applyFilters()">
+                    <span style="color: #9ca3af; font-size: 0.8em;">km/h</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date Range:</label>
+                <select id="filter-date-range" onchange="applyFilters()">
+                    <option value="">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+<div id="violations-grid" class="violations-grid">
+    <p style="grid-column: 1/-1; text-align: center; color: #9ca3af;">Loading detections...</p>
+</div> 

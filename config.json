@@ -1,0 +1,65 @@
+{
+  "camera_settings": {
+    "rtsp_urls": [
+      "rtsp://"
+    ],
+    "fps": 25
+  },
+  "detection_settings": {
+    "confidence_threshold": 0.2,
+    "use_gpu": true,
+    "min_area": 800,
+    "blur_size": 10,
+    "yolo_model": "yolov8x.pt",
+    "require_yolo_validation": true,
+    "accept_generic_vehicle": true
+  },
+  "speed_settings": {
+    "speed_limit_kmh": 30,
+    "speed_mph": false,
+    "min_speed_over": 5,
+    "max_speed_over": 150,
+    "min_time_diff": 0.1,
+    "max_time_diff": 5,
+    "min_track_length": 50,
+    "track_counter": 7
+  },
+  "calibration_settings": {
+    "cal_obj_mm_l2r": 4127,
+    "cal_obj_px_l2r": 261,
+    "cal_obj_mm_r2l": 4127,
+    "cal_obj_px_r2l": 261
+  },
+  "detection_zones": {
+    "l2r_enabled": true,
+    "r2l_enabled": true,
+    "l2r_line_x": 600,
+    "r2l_line_x": 1150,
+    "detection_area_top": 300,
+    "detection_area_bottom": 590,
+    "detection_area_left": 100,
+    "detection_area_right": 1820
+  },
+  "output_settings": {
+    "save_images": true,
+    "image_quality": 50
+  },
+  "vehicle_settings": {
+    "vehicle_classes": [
+      "car",
+      "truck",
+      "bus",
+      "motorcycle",
+      "person",
+      "bicycle"
+    ],
+    "ignore_yolo_validation": true
+  },
+  "debug_settings": {
+    "verbose_logging": false
+  },
+  "_metadata": {
+    "last_updated": "2025-06-17T20:06:56.240702",
+    "version": "1.0"
+  }
+}

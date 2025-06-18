@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Camera Control Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-main">
+            <div class="header-title-section">
+                <h1>🚗 Speed Camera Control</h1>
+                <a href="https://github.com/julbov/speed-detection-camera" target="_blank" class="github-header-link">
+                    <span class="github-header-icon">⭐</span>
+                    <span class="github-header-text">GitHub</span>
+                </a>
+            </div>
+            <div class="header-controls">
+                <button id="start-btn" class="btn btn-success" onclick="startCamera()">
+                    ▶️ Start Camera
+                </button>
+                <button id="stop-btn" class="btn btn-danger" onclick="stopCamera()" disabled>
+                    ⏹️ Stop Camera
+                </button>
+                <div class="status-indicator" id="camera-status">
+                    <span class="indicator offline"></span>
+                    <span id="status-text">Offline</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="nav-item active" onclick="showTab('dashboard')">
+                🏠 Dashboard
+            </div>
+            <div class="nav-item" onclick="showTab('settings')">
+                ⚙️ Settings
+            </div>
+            <div class="nav-item" onclick="showTab('detections')">
+                🚨 Detections
+            </div>
+            <div class="nav-item" onclick="showTab('analytics')">
+                📊 Analytics
+            </div>
+            
+            <div class="github-sidebar-widget">
+                <a href="https://github.com/julbov/speed-detection-camera" target="_blank" class="github-sidebar-link">
+                    <div class="github-sidebar-icon">⭐</div>
+                    <div class="github-sidebar-text">
+                        <div class="github-sidebar-title">Star on GitHub</div>
+                        <div class="github-sidebar-subtitle">speed-detection-camera</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="dashboard" class="tab-content active">
+                <div id="dashboard-content"></div>
+            </div>
+            
+            <div id="settings" class="tab-content">
+                <div id="settings-content"></div>
+            </div>
+            
+            <div id="detections" class="tab-content">
+                <div id="detections-content"></div>
+            </div>
+            
+            <div id="analytics" class="tab-content">
+                <div id="analytics-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 id="modal-title">Image</h3>
+            <img id="modal-image" style="width: 100%; height: auto; border-radius: 8px;">
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/detections.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html> 

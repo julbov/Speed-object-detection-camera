@@ -1,0 +1,98 @@
+<!-- Status Overview -->
+<div class="status-grid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;">
+    <div class="status-card" style="padding: 10px;">
+        <div class="status-value" id="violations-count" style="font-size: 1.4em;">0</div>
+        <div class="status-label" style="font-size: 0.8em;">🚨 Detections</div>
+    </div>
+    <div class="status-card" style="padding: 10px;">
+        <div class="status-value" id="frames-processed" style="font-size: 1.4em;">0</div>
+        <div class="status-label" style="font-size: 0.8em;">📹 Frames</div>
+    </div>
+    <div class="status-card" style="padding: 10px;">
+        <div class="status-value" id="memory-usage" style="font-size: 1.4em;">0%</div>
+        <div class="status-label" style="font-size: 0.8em;">🧠 Memory</div>
+    </div>
+    <div class="status-card" style="padding: 10px;">
+        <div class="status-value" id="images-size" style="font-size: 1.4em;">0 MB</div>
+        <div class="status-label" style="font-size: 0.8em;">📁 Images</div>
+    </div>
+    <div class="status-card" style="padding: 10px;">
+        <div class="status-value" id="uptime" style="font-size: 1.4em;">0s</div>
+        <div class="status-label" style="font-size: 0.8em;">⏱️ Uptime</div>
+    </div>
+</div>
+
+<!-- RTSP Video Stream -->
+<div class="control-panel">
+    <h3>📡 RTSP Stream</h3>
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <button id="start-stream-btn" class="btn btn-success" onclick="startVideoStream()">▶️ Start Stream</button>
+        <button id="stop-stream-btn" class="btn btn-danger" onclick="stopVideoStream()" disabled>⏹️ Stop Stream</button>
+    </div>
+    <div class="video-container" style="max-width: 800px;">
+        <img id="video-stream" class="video-stream" style="width: 100%; height: 450px; object-fit: cover; border-radius: 8px; display: none;" 
+             alt="RTSP Video Stream" 
+             onerror="this.style.display='none'; document.getElementById('stream-error').style.display='block';">
+        <div id="stream-error" style="width: 100%; height: 450px; display: flex; align-items: center; justify-content: center; background: #374151; border-radius: 8px; color: #9ca3af;">
+            📡 RTSP stream not active
+        </div>
+    </div>
+</div>
+
+<!-- System Console -->
+<div class="control-panel" style="margin-top: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3>🖥️ System Console</h3>
+    </div>
+    
+    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+        <button class="btn btn-secondary" onclick="refreshConsole()" style="font-size: 0.9em;">🔄 Refresh</button>
+        <button class="btn btn-secondary" onclick="clearConsole()" style="font-size: 0.9em;">🗑️ Clear</button>
+        
+        <!-- Console Filters -->
+        <div style="display: flex; gap: 10px; align-items: center; border-left: 1px solid #374151; padding-left: 15px;">
+            <label style="color: #9ca3af; font-size: 0.9em;">Show:</label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="filter-info" checked onchange="filterConsole()" style="transform: scale(1.1);">
+                <span style="color: #10b981;">ℹ️ Info</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="filter-warning" checked onchange="filterConsole()" style="transform: scale(1.1);">
+                <span style="color: #f59e0b;">⚠️ Warning</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="filter-error" checked onchange="filterConsole()" style="transform: scale(1.1);">
+                <span style="color: #ef4444;">❌ Error</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="filter-debug" onchange="filterConsole()" style="transform: scale(1.1);">
+                <span style="color: #8b5cf6;">🐛 Debug</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="filter-speed-camera" checked onchange="filterConsole()" style="transform: scale(1.1);">
+                <span style="color: #06b6d4;">🚗 Speed Camera</span>
+            </label>
+        </div>
+        
+        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+            <label style="display: flex; align-items: center; gap: 5px; font-size: 0.9em;">
+                <input type="checkbox" id="auto-scroll" checked style="transform: scale(1.1);">
+                <span style="color: #9ca3af;">Auto-scroll</span>
+            </label>
+        </div>
+    </div>
+    
+    <div id="console-output" style="background: #1f2937; border: 1px solid #374151; border-radius: 8px; height: 320px; overflow-y: auto; padding: 10px; font-family: 'Courier New', monospace; font-size: 0.8em; line-height: 1.2;">
+        <div style="color: #9ca3af; text-align: center; padding: 20px;">Loading console...</div>
+    </div>
+</div>
+
+<!-- Latest Detection -->
+<div class="control-panel" style="margin-top: 20px;">
+    <h3>🎯 Latest Detection</h3>
+    <div id="latest-detection" style="min-height: 200px;">
+        <div style="display: flex; align-items: center; justify-content: center; color: #9ca3af; height: 200px;">
+            No recent detections
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,13 @@
+services:
+  speed-object-detection-camera:
+    build: .
+    container_name: speed-object-detection-camera
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./detections:/app/detections
+      - ./models:/app/models
+      - ./config.json:/app/config.json
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped 
