@@ -2,7 +2,7 @@
 
 A speed detection system with a real time web interface for speed and car monitoring with analytics. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
 
-##Contents
+## Contents
 [Detection Models](#yolo-models-for-object-detection)
 
 ## Introduction
@@ -86,7 +86,7 @@ The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
 
 ### Quick Start Notes
 
-- **YOLO Models**: The YOLOv8 nano model is included but its highly recommended to download a better model models are saved in the models/ folder
+- **YOLO Models**: The YOLOv8 nano model is included but its highly recommended to download a better model models are saved in the `models/` folder
 - **Detection Data**: All speed detections and images are saved in the `detections/` folder
 - **GPU Support**: Automatically uses GPU if available, falls back to CPU, (can be toggled in settings)
 - **Mobile Friendly**: The web interface works on mobile devices
