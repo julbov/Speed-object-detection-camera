@@ -289,52 +289,45 @@ class RTSPDecoder:
         
         self.last_connection_attempt = current_time
         
-        # Only print connection message every 10 attempts to reduce spam
-        if self.retry_count % 10 == 0:
+        # Only print connection message every 30 attempts to reduce spam
+        if self.retry_count % 30 == 0:
             print(f"🔗 Connecting to {self.rtsp_url}")
         
-        # Try different backends for better H.264 support
-        backends = [
-            cv2.CAP_FFMPEG,
-            cv2.CAP_GSTREAMER,
-            cv2.CAP_ANY
-        ]
-        
-        for backend in backends:
-            try:
-                self.cap = cv2.VideoCapture(self.rtsp_url, backend)
-                
-                # Configure for better H.264 handling
-                self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-                camera_fps = config_manager.get('camera_settings.fps', 25)
-                self.cap.set(cv2.CAP_PROP_FPS, camera_fps)
-                
-                if self.cap.isOpened():
-                    # Test read
+        # Use FFmpeg backend directly for RTSP streams
+        try:
+            self.cap = cv2.VideoCapture(self.rtsp_url, cv2.CAP_FFMPEG)
+            
+            # Configure for better H.264 handling
+            self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+            camera_fps = config_manager.get('camera_settings.fps', 25)
+            self.cap.set(cv2.CAP_PROP_FPS, camera_fps)
+            
+            if self.cap.isOpened():
+                # Test read multiple frames to ensure stable connection
+                for _ in range(3):
                     ret, frame = self.cap.read()
                     if ret and frame is not None:
-                        print(f"✅ Connected using backend: {backend}")
+                        # Only print success message every 30 attempts or on first success
+                        if self.retry_count % 30 == 0 or self.retry_count == 0:
+                            print(f"✅ RTSP Connected")
                         # Reset backoff on successful connection
                         self.connection_backoff = 1
                         self.retry_count = 0
                         return True
-                    else:
-                        self.cap.release()
-                        
-            except Exception as e:
-                if self.retry_count % 10 == 0:  # Only log every 10 attempts
-                    print(f"❌ Backend {backend} failed: {e}")
-                if self.cap:
-                    self.cap.release()
-                continue
+                
+                self.cap.release()
+                    
+        except Exception:
+            if self.cap:
+                self.cap.release()
         
         # Increase backoff time (max 30 seconds)
         self.connection_backoff = min(self.connection_backoff * 1.5, 30)
         self.retry_count += 1
         
-        # Only print failure message every 10 attempts
-        if self.retry_count % 10 == 0:
-            print(f"❌ All backends failed! (Attempt {self.retry_count}, next retry in {self.connection_backoff:.1f}s)")
+        # Only print failure message every 50 attempts to reduce spam
+        if self.retry_count % 50 == 0:
+            print(f"⚠️ RTSP connection issues (Attempt {self.retry_count}, retrying...)")
         
         return False
     
@@ -367,9 +360,9 @@ class RTSPDecoder:
                     self.frame_buffer.add_error()
                     
                     if consecutive_errors >= max_consecutive_errors:
-                        # Only print reconnection message every 10 attempts
-                        if self.retry_count % 10 == 0:
-                            error_msg = f"⚠️ RTSP: Too many consecutive errors ({consecutive_errors}), reconnecting..."
+                        # Only print reconnection message every 50 attempts
+                        if self.retry_count % 50 == 0:
+                            error_msg = f"⚠️ RTSP: Stream interrupted, reconnecting..."
                             print(error_msg)
                         self.cap.release()
                         self.cap = None
@@ -380,15 +373,15 @@ class RTSPDecoder:
                 consecutive_errors += 1
                 self.frame_buffer.add_error()
                 
-                # Only print decode errors every 10 attempts
-                if consecutive_errors % 10 == 0:
-                    error_msg = f"⚠️ RTSP Decode error: {e}"
+                # Suppress most decode error messages - they're usually temporary
+                if consecutive_errors % 100 == 0:
+                    error_msg = f"⚠️ RTSP: Decode issues detected"
                     print(error_msg)
                 
                 if consecutive_errors >= max_consecutive_errors:
-                    # Only print reconnection message every 10 attempts
-                    if self.retry_count % 10 == 0:
-                        reconnect_msg = "🔄 RTSP: Attempting reconnection due to decode errors..."
+                    # Only print reconnection message every 50 attempts
+                    if self.retry_count % 50 == 0:
+                        reconnect_msg = "🔄 RTSP: Reconnecting due to decode errors..."
                         print(reconnect_msg)
                     if self.cap:
                         self.cap.release()
