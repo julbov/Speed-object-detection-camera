@@ -1,27 +1,24 @@
-# Speed & object detection camera
+# Speed & Object Detection Camera
 
-A speed detection system with a real time web interface for speed and car monitoring with analytics. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
-
-## Contents
-[Detection Models](#yolo-models-for-object-detection)
+A speed monitoring and object detection system with a real-time web interface. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
 
 ## Introduction
-This system can detect and measure the speed of objects. It works by monitoring the rtsp stream and waiting for motion the speed is being measured but only logs when the object detection algorithm detects this too (can be changed in settings), an image is saved with the speed of the object, color, object type (eg, car, person, anything). This can be viewed on the detections page and on the analytics page which gives and comprehensive overview.
-
-- Dashboard
-- Settings
-- Detections
-- Analytics
+This system detects and measures the speed of moving objects by watching the RTSP video stream for motion. Speed is only recorded when an object is also recognized by the detection algorithm (this can be changed in the settings). Each detection saves an image along with the object's speed, color, and type (e.g., car, person, etc.). These results are shown on the detections page and summarized on the analytics page for a clear overview.
 
 
-## Yolo models for object Detection
+| | | 
+|:-------------------------:|:-------------------------:|
+<img width="" height="" alt="dashboard" src="https://github.com/user-attachments/assets/415fe6a4-0b96-405c-ae19-decc4a130ed8">  Dashboard |  <img width="" height="" alt="detections" src="https://github.com/user-attachments/assets/c85a35b5-3884-4a65-8b92-245bc6b1e56c"> Detections |
+<img height="" alt="analytics" src="https://github.com/user-attachments/assets/8c7edc98-ec7b-4f9f-bd52-96738a620ef9"> Analytics | <img height="" alt="analytics" src="https://github.com/user-attachments/assets/4eb853cd-51f7-4c47-975c-05f496375cb4"><br>Analytics |
 
-On the settings page yolo v8 models can be automatically downloaded when selected. I havent changed the models they are just default, a better solution would be to customize these models to better adjust them to the use case. Or use the latest versions of yolo. Suggestions would be greatly appreciated! [YOLO](https://github.com/ultralytics/ultralytics)
+## Yolo Models for Object Detection
+On the settings page, YOLOv8 models can be automatically downloaded when selected. A better solution would be to customize these models to better adjust them to your use case. Or use the latest versions of YOLO. Suggestions would be greatly appreciated!  
+[Link to the YOLO models](https://github.com/ultralytics/ultralytics)
 
 ## Installation
-I recommend deploying this on your home server with docker the web interface is mobile compatible so data can be viewed from there too. Although I havent tested it this could be run on a raspberry pi, as long as there are enough resources for the rtsp stream and detection. So far this works on my home docker server with tailscale for acces outside the home network.
+I recommend running this on a home server using Docker. The web interface works well on mobile devices, so you can check detections from anywhere. While not tested, it may also run on a Raspberry Pi if it has enough resources for the RTSP stream and detection. It currently runs on my home Docker server with Tailscale for remote access.
 
-The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
+The web server can be accessed at <http://localhost:5000> (HTTP not HTTPS)
 
 ### Prerequisites
 
@@ -34,18 +31,17 @@ The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
 1. **Download the Application**
 
    ```bash
-   git clone https://github.com/[your-username]/speed-object-detection-camera.git
+   git clone https://github.com/julbov/speed-object-detection-camera.git
    cd speed-object-detection-camera
    ```
-2. **Configure Your Camera**
 
-   Edit `config.json` with your RTSP camera details before building.
-3. **Build and Run with Docker**
+2. **Build and Run with Docker**
 
    ```bash
    docker-compose up -d
    ```
-4. **Access the Web Interface**
+
+3. **Access the Web Interface**
 
    Go to: `http://localhost:5000`
 
@@ -57,14 +53,16 @@ The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
    git clone https://github.com/julbov/speed-object-detection-camera.git
    cd speed-object-detection-camera
    ```
+
 2. **Install Python Dependencies**
 
    ```bash
    pip install -r requirements.txt
    ```
+
 3. **Configure Your Camera**
 
-   Edit `config.json` with your camera details:
+   Edit `config.json` with your RTSP URL details:
 
    ```json
    {
@@ -73,31 +71,28 @@ The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
      }
    }
    ```
+
 4. **Run the Application**
 
    ```bash
    python speed_camera_web.py
    ```
+
 5. **Access the Web Interface**
 
-  Go to: `http://localhost:5000`
-
-
+   Go to: `http://localhost:5000`
 
 ### Quick Start Notes
 
-- **YOLO Models**: The YOLOv8 nano model is included but its highly recommended to download a better model models are saved in the `models/` folder
-- **Detection Data**: All speed detections and images are saved in the `detections/` folder
-- **GPU Support**: Automatically uses GPU if available, falls back to CPU, (can be toggled in settings)
-- **Mobile Friendly**: The web interface works on mobile devices
+- **YOLO Models**: The YOLOv8 nano model is included, but it’s highly recommended to download a better model. Models are saved in the `models/` folder.
+- **Detection Data**: All speed detections and images are saved in the `detections/` folder.
+- **GPU Support**: Can use GPU if available, falls back to CPU (can be toggled in settings).
+- **Mobile Friendly**: The web interface works on mobile devices.
 
-## Settings
-For an more in-dept guide on how to calibrate the camera I recommended [pageauc/speed-camera/wiki](https://github.com/pageauc/speed-camera/wiki/Calibrate-Camera-for-Distance).
+## Settings 
 ![image](https://github.com/user-attachments/assets/248a1d8f-54bb-471b-9a10-d2dc118ad066)
 
-![image](https://github.com/user-attachments/assets/17fd439c-e190-4f23-85c0-5925ff626747)
-
-Most settings can be updated and change live like the detection lines, some settings however require a camera restart (stop/start).
+Most settings can be updated and changed live like the detection lines. Some settings, however, require a camera restart (stop/start).
 
 ### Camera Settings
 - **RTSP URL**: Common RTSP [protocols](https://www.getscw.com/decoding/rtsp)
@@ -105,67 +100,59 @@ Most settings can be updated and change live like the detection lines, some sett
 
 ### Detection Settings
 - **YOLO Models**: See [Yolo models for object Detection](#yolo-models-for-object-detection)
-- **Confidence treshold**: This can be adjusted to adjust the confidence of the yolo model when it classifies something as that object
-- **Use GPU**: defaults to cpu if no GPU can be found.
-- **Min Detection Area**: Can be adjusted to filter small detections
-- **Motion Sensitivity**: Removes noise from the detection Smaller values (1-5) are more sensitive to small movements but may detect noise, while larger values (10-50) reduce false detections from shadows and small movements but may miss smaller vehicles. Default is 10
- 
+- **Confidence Threshold**: This can be adjusted to change the confidence of the YOLO model when it classifies something as that object.
+- **Use GPU**: Defaults to CPU if no GPU can be found.
+- **Min Detection Area**: Can be adjusted to filter small detections.
+- **Motion Sensitivity**: Removes noise from detection. Smaller values (1–5) are more sensitive to small movements but may detect noise, while larger values (10–50) reduce false detections from shadows and small movements but may miss smaller vehicles. Default is 10.
 
 ### Speed Detection Settings
-- **Speed limit**: If an object exceeds this limit its flagged as an violation on the detections page
-- **Speed in mph**
-- **Minimum Speed/maximum Speed**: Filters unrealistically slow or fast speeds
-- **Min/max time difference**: The time a vehicle must be tracked before the system will calculate its speed.
-- **Min track length**: Minimum distance in pixels a object must travel
-- **Track Counter**: Number of frames a object must travel
+- **Speed Limit**: If an object exceeds this limit, it's flagged as a violation on the detections page.
+- **Speed in MPH**
+- **Minimum Speed / Maximum Speed**: Filters unrealistically slow or fast speeds.
+- **Min / Max Time Difference**: The time a vehicle must be tracked before the system will calculate its speed.
+- **Min Track Length**: Minimum distance in pixels an object must travel.
+- **Track Counter**: Number of frames an object must travel.
 
-Higher values = more accurate speed (more data points), but slower detection
-Lower values = faster detection, but potentially less accurate
-
-
-
+Higher values = more accurate speed (more data points), but slower detection.  
+Lower values = faster detection, but potentially less accurate.
 
 ### Detection Zones
 
 Configure detection area and speed lines:
 
-- **Left to right enabled** & **Right to Left enabled**:Allow detection only in one direction
-- **L2R Line**: Left-to-right speed measurement line position
-- **R2L Line**: Right-to-left speed measurement line position
-- **Detection Area Top, Bottom, left and right**: the detection area margins
+- **Left to Right Enabled** & **Right to Left Enabled**: Allow detection only in one direction.
+- **L2R Line**: Left-to-right speed measurement line position.
+- **R2L Line**: Right-to-left speed measurement line position.
+- **Detection Area Top, Bottom, Left and Right**: The detection area margins.
 
 ### Calibration Settings
+- **L2R / R2L Object Size in mm**: Real-life size.
+- **L2R / R2L Object Size in Pixels**: Size on screen.
 
-
-
-**How to calibratie**
-1. Measure a known object like the vehicle length [lookup vehicle dimensions]https://www.automobiledimension.com
-2. Count pixels for same object in camera view
-3. Set calibration values.
+**How to Calibrate**
+1. Measure a known object like the vehicle length. [Lookup vehicle dimensions](https://www.automobiledimension.com)
+2. Count pixels for the same object in the camera view.
+3. Set calibration values.  
+For a more in-depth guide on how to calibrate the camera, I recommend [this guide](https://github.com/pageauc/speed-camera/wiki/Calibrate-Camera-for-Distance).
 
 ### Output Settings
-- **Save Images** When disabled the detections still get recorded but no image is saved a placeholder is used instead of an image.
-- **Image Quality** JPEG image quality reduce file size
+- **Save Images**: When disabled, the detections still get recorded but no image is saved. A placeholder is used instead of an image.
+- **Image Quality**: JPEG image quality to reduce file size.
 
+### Vehicle Settings
+- **Ignore YOLO Validation**: If enabled, every object that gets detected by YOLO gets logged. If it can't be classified, it gets the class "unknown".
+- **Vehicle Classes**: Specify classes that are considered valid. These classes are also shown in the analytics and detection page.
 
 ## Troubleshooting
 
-### Cant connect to the webpage
-- Make sure to use http and not https
-- Check if port is not already in use defaults to 5000
+### Can't Connect to the Webpage
+- Make sure to use HTTP and not HTTPS.
+- Check if port 5000 is already in use.
 
 ### Camera Connection
-
-- Verify RTSP URL with VLC or similar player
-
-### Performance Optimizations
-
-- Use GPU if possible
-- Use smaller YOLO model
-
-
+- Verify RTSP URL with VLC or a similar player.
 
 ## License
-   Apache-2.0 license
-   Copyright [2025] [julbov]
-**Note**:This software is provided for educational and research purposes only. The author is not responsible for any misuse or violation of local laws. It is your responsibility to ensure legal compliance in your jurisdiction.
+Apache-2.0 license  
+Copyright [2025] [julbov]  
+**Note**: This software is provided for educational and research purposes only. The author is not responsible for any misuse or violation of local laws. It is your responsibility to ensure legal compliance in your jurisdiction.
