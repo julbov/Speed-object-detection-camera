@@ -98,7 +98,7 @@ Most settings can be updated and change live like the detection lines, some sett
 
 ### Camera Settings
 - RTSP URL
-     - Common RTSP [protocols]https://www.getscw.com/decoding/rtsp
+     - Common RTSP [protocols](https://www.getscw.com/decoding/rtsp)
 - Camera Framerate
 
 ### Detection Settings
