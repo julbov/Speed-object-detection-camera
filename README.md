@@ -97,34 +97,23 @@ For an more in-dept guide on how to calibrate the camera I recommended [pageauc/
 Most settings can be updated and change live like the detection lines, some settings however require a camera restart (stop/start).
 
 ### Camera Settings
-- RTSP URL
-     - Common RTSP [protocols](https://www.getscw.com/decoding/rtsp)
-- Camera Framerate
+- **RTSP URL**: Common RTSP [protocols](https://www.getscw.com/decoding/rtsp)
+- **Camera Framerate**
 
 ### Detection Settings
-- YOLO Models
-   - See [Yolo models for object Detection](#yolo-models-for-object-detection)
-- Confidence treshold
-     - This can be adjusted to adjust the confidence of the yolo model when it classifies something as that object
-- Use GPU defaults to cpu if no GPU can be found
-- Min Detection Area
-   - Can be adjusted to filter small detections
-- Motion Sensitivity
-   - Removes noise from the detection Smaller values (1-5) are more sensitive to small movements but may detect noise, while larger values (10-50) reduce false detections from shadows and small movements but may miss smaller vehicles. Default is 10
+- **YOLO Models**: See [Yolo models for object Detection](#yolo-models-for-object-detection)
+- **Confidence treshold**: This can be adjusted to adjust the confidence of the yolo model when it classifies something as that object
+- **Use GPU**: defaults to cpu if no GPU can be found.
+- **Min Detection Area**: Can be adjusted to filter small detections
+- **Motion Sensitivity**: Removes noise from the detection Smaller values (1-5) are more sensitive to small movements but may detect noise, while larger values (10-50) reduce false detections from shadows and small movements but may miss smaller vehicles. Default is 10
  
 
 ### Speed Detection Settings
-- Speed limit
-  - If an object exceeds this limit its flagged as an violation on the detections page
-- Speed in mph
-- Minimum Speed
-   - Filters unrealistically slow speeds
-- Maximum Speed
-- Min time difference
-  - The minimum time a vehicle must be tracked before the system will calculate its speed.
-- Max Time difference
-- Min track length
-  - Minimum distance in pixels vehicle must travel
+- **Speed limit**: If an object exceeds this limit its flagged as an violation on the detections page
+- **Speed in mph**
+- **Minimum Speed/maximum Speed**: Filters unrealistically slow or fast speeds
+- **Min/max time difference**: The time a vehicle must be tracked before the system will calculate its speed.
+- **Min track length**: Minimum distance in pixels vehicle must travel
 - Track Counter
   - Number of frames a car must travel
   - 
