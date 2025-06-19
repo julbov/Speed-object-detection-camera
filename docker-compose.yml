@@ -5,9 +5,15 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./detections:/app/detections
-      - ./models:/app/models
-      - ./config/config.json:/app/config.json
+      - detections_data:/app/detections
+      - models_data:/app/models
+      - config_data:/app/config.json
     environment:
       - PYTHONUNBUFFERED=1
-    restart: unless-stopped 
+    command: sh /app/entrypoint.sh
+    restart: unless-stopped
+
+volumes:
+  detections_data:
+  models_data:
+  config_data:
