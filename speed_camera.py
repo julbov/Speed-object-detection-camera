@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-Speed Detection Camera
-Educational and Research Use Only
-
-LEGAL DISCLAIMER:
-This software is provided for educational and research purposes only.
-Users are solely responsible for ensuring compliance with all applicable
-laws and regulations. The authors assume no liability for any use of this
-software. Consult legal counsel before deployment.
-"""
-
 import os
 import cv2
 import numpy as np
