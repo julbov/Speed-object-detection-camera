@@ -21,7 +21,7 @@ On the settings page yolo v8 models can be automatically downloaded when selecte
 ## Installation
 I recommend deploying this on your home server with docker the web interface is mobile compatible so data can be viewed from there too. Although I havent tested it this could be run on a raspberry pi, as long as there are enough resources for the rtsp stream and detection. So far this works on my home docker server with tailscale for acces outside the home network.
 
-The webserver can be accesed at <http:localhost:5000> Note HTTP not HTTPS.
+The webserver can be accesed at <http:localhost:5000> (HTTP not HTTPS)
 
 ### Prerequisites
 
