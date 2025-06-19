@@ -1,267 +1,176 @@
 # Speed & object detection camera
 
-A speed detection system with web interface for speed and car monitoring with analytics. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master). 
+A speed detection system with a real time web interface for speed and car monitoring with analytics. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
+
+## Introduction
+This system can detect and measure the speed of objects. It works by monitoring the rtsp stream and waiting for motion the speed is being measured but only logs when the object detection algorithm detects this too (can be changed in settings), an image is saved with the speed of the object, color, object type (eg, car, person, anything). This can be viewed on the detections page and on the analytics page which gives and comprehensive overview.
+
+- Dashboard
+- Settings
+- Detections
+- Analytics
 
 
-## About
+## Yolo models for object Detection
 
-- As of now the system only works with RTSP stream.
-- [YOLO](https://github.com/ultralytics/ultralytics) object detection integrated with speed camera
-- Web UI with detections & speed overview
-- Analytics page
-
-
-![1750208315096](image/README/1750208315096.png)
-
-![1750209348960](image/README/1750209348960.png)
-
-![1750208352554](image/README/1750208352554.png)
-
-![1750209178216](image/README/1750209178216.png)
-
-![1750209198660](image/README/1750209198660.png)
-
-## Yolo models for object 
-
-## Detection
-
-On the settings page yolo v8 models can be automatically downloaded when selected. I havent changed the models they are just default, a better solution would be to customize these models to better adjust them to the use case. Or use the latest versions of yolo. Suggestions would be greatly apprieciated!
-
+On the settings page yolo v8 models can be automatically downloaded when selected. I havent changed the models they are just default, a better solution would be to customize these models to better adjust them to the use case. Or use the latest versions of yolo. Suggestions would be greatly appreciated! [YOLO](https://github.com/ultralytics/ultralytics)
 
 ## Installation
+I recommend deploying this on your home server with docker the web interface is mobile compatible so data can be viewed from there too. Although I havent tested it this could be run on a raspberry pi, as long as there are enough resources for the rtsp stream and detection. So far this works on my home docker server with tailscale for acces outside the home network.
 
-I recommend deploying this on your home server with docker the web interface is mobile compatible so data can be viewed from there too. (port 5000). Although I havent tested it this could be run on any linux or windows machine as long as there are enough resources for the rtsp stream and detection. 
+The webserver can be accesed at <http:localhost:5000> Note HTTP not HTTPS.
 
-### Local Installation
+### Prerequisites
 
-1. **Clone Repository**
+- **Python 3.9+** (for local installation)
+- **Docker & Docker Compose** (for Docker installation)
+- **IP Camera** or camera with RTSP stream capability
 
-```bash
-git clone https://github.com/your-username/deep-license-plate-recognition.git
-cd deep-license-plate-recognition
-```
+### Method 1: Docker Installation (Recommended)
 
-2. **Install Dependencies**
+1. **Download the Application**
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   git clone https://github.com/[your-username]/speed-object-detection-camera.git
+   cd speed-object-detection-camera
+   ```
+2. **Configure Your Camera**
 
-3. **Download YOLO Models**
+   Edit `config.json` with your RTSP camera details before building.
+3. **Build and Run with Docker**
 
-```bash
-# Models will auto-download on first run, or manually:
-wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8x.pt -P models/
-```
+   ```bash
+   docker-compose up -d
+   ```
+4. **Access the Web Interface**
 
-4. **Configure Camera**
-   Edit `config.json`:
+   Go to: `http://localhost:5000`
 
-```json
-{
-  "camera_settings": {
-    "rtsp_urls": ["rtsp://username:password@camera_ip:554/stream"]
-  }
-}
-```
+### Method 2: Local Installation (Python)
 
-5. **Run System**
+1. **Download the Application**
 
-```bash
-# Web interface (recommended)
-python speed_camera_web.py
+   ```bash
+   git clone https://github.com/julbov/speed-object-detection-camera.git
+   cd speed-object-detection-camera
+   ```
+2. **Install Python Dependencies**
 
-# CLI only
-python speed_camera.py
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configure Your Camera**
 
-Access web interface at `http://localhost:5000`
+   Edit `config.json` with your camera details:
 
-### Docker Installation
+   ```json
+   {
+     "camera_settings": {
+       "rtsp_url": "rtsp://username:password@your-camera-ip:554/h264"
+     }
+   }
+   ```
+4. **Run the Application**
 
-1. **Build Image**
+   ```bash
+   python speed_camera_web.py
+   ```
+5. **Access the Web Interface**
 
-```bash
-docker-compose build
-```
+  Go to: `http://localhost:5000`
 
-2. **Configure Environment**
 
-```bash
-# Edit docker-compose.yml for your camera settings
-# Mount persistent storage for detections/
-```
 
-3. **Deploy**
+### Quick Start Notes
 
-```bash
-# GPU-enabled deployment
-docker-compose up -d
-
-# CPU-only deployment
-docker-compose -f docker-compose.yml -f docker-compose.cpu.yml up -d
-```
+- **YOLO Models**: The YOLOv8 nano model is included but its highly recommended to download a better model models are saved in the models/ folder
+- **Detection Data**: All speed detections and images are saved in the `detections/` folder
+- **GPU Support**: Automatically uses GPU if available, falls back to CPU, (can be toggled in settings)
+- **Mobile Friendly**: The web interface works on mobile devices
 
 ## Settings
+For an more in-dept guide on how to calibrate the camera I recommended [pageauc/speed-camera/wiki](https://github.com/pageauc/speed-camera/wiki/Calibrate-Camera-for-Distance).
+![image](https://github.com/user-attachments/assets/248a1d8f-54bb-471b-9a10-d2dc118ad066)
 
-### Camera Calibration
+![image](https://github.com/user-attachments/assets/17fd439c-e190-4f23-85c0-5925ff626747)
+
+Most settings can be updated and change live like the detection lines, some settings however require a camera restart (stop/start).
+
+### Camera Settings
+- RTSP URL
+     - Common RTSP [protocols]https://www.getscw.com/decoding/rtsp
+- Camera Framerate
+
+### Detection Settings
+- YOLO Models
+   - See [Yolo models for object Detection](#yolo-models-for-object-detection)
+- Confidence treshold
+     - This can be adjusted to adjust the confidence of the yolo model when it classifies something as that object
+- Use GPU defaults to cpu if no GPU can be found
+- Min Detection Area
+   - Can be adjusted to filter small detections
+- Motion Sensitivity
+   - Removes noise from the detection Smaller values (1-5) are more sensitive to small movements but may detect noise, while larger values (10-50) reduce false detections from shadows and small movements but may miss smaller vehicles. Default is 10
+ 
+
+### Speed Detection Settings
+- Speed limit
+  - If an object exceeds this limit its flagged as an violation on the detections page
+- Speed in mph
+- Minimum Speed
+   - Filters unrealistically slow speeds
+- Maximum Speed
+- Min time difference
+  - The minimum time a vehicle must be tracked before the system will calculate its speed.
+- Max Time difference
+- Min track length
+  - Minimum distance in pixels vehicle must travel
+- Track Counter
+  - Number of frames a car must travel
+  - 
+Higher values = more accurate speed (more data points), but slower detection
+Lower values = faster detection, but potentially less accurate
+
 
 1. Access Settings → Calibration Settings
-2. Measure a known object (vehicle length: ~4127mm)
+2. Measure a known object like the vehicle length [lookup vehicle dimensions]https://www.automobiledimension.com
 3. Count pixels for same object in camera view
-4. Set calibration values for L2R and R2L directions
+4. Set calibration values.
 
 ### Detection Zones
 
-Configure detection areas and speed lines:
+Configure detection area and speed lines:
 
-- **Detection Area**: Rectangle where motion is detected
-- **L2R Line**: Left-to-right speed measurement line
-- **R2L Line**: Right-to-left speed measurement line
+- **Left to right enabled** & **Right to Left enabled**:Allow detection only in one direction
+- **L2R Line**: Left-to-right speed measurement line position
+- **R2L Line**: Right-to-left speed measurement line position
+- **Detection Area Top, Bottom, left and right**: the detection area margins
 
-### Speed Settings
+### Calibration Settings
 
-- **Speed Limit**: When detection is marked as a speed violation
-- **Min/Max Speed**: Filter unrealistic readings
-- **Track Counter**: Minimum detections before speed calculation
+### Output Settings
+- **Save Images** When disabled the detections still get recorded but no image is saved a placeholder is used instead of an image.
+- **Image Quality** JPEG image quality reduce file size
 
-## Usage
-
-### Web Interface
-
-- **Dashboard**: Real-time monitoring and system status
-- **Detections**: View captured violations with images
-- **Analytics**: Speed trends and traffic analysis
-- **Settings**: System configuration and calibration
-
-### Data Export
-
-- **CSV Export**: Detection logs with timestamps and metadata
-- **Image Archive**: Annotated violation images
-- **Analytics Export**: Traffic pattern reports
-
-## API Endpoints
-
-- `GET /api/status` - System status
-- `GET /api/detections` - Detection history
-- `GET /api/analytics` - Traffic analytics
-- `POST /api/config` - Update configuration
-- `GET /api/stream` - Live video feed
 
 ## Troubleshooting
 
-### GPU Issues
-
-```bash
-# Check if PyTorch can detect GPU
-python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
-
-# Check GPU status (if NVIDIA GPU present)
-nvidia-smi
-```
-
-**Note**: GPU acceleration is automatic - no CUDA Toolkit installation required. PyTorch handles GPU detection and falls back to CPU if needed.
+### Cant connect to the webpage
+- Make sure to use http and not https
+- Check if port is not already in use defaults to 5000
 
 ### Camera Connection
 
 - Verify RTSP URL with VLC or similar player
-- Check network connectivity to camera
-- Ensure credentials are correct
 
 ### Performance Optimization
 
-- Use GPU acceleration when available
-- Adjust detection area to reduce processing load
-- Lower RTSP resolution if needed
-- Increase `min_area` to filter small objects
+- Use GPU if possible
+- Smaller YOLO model
 
-## Development
 
-### Project Structure
-
-```
-├── speed_camera.py          # Core detection engine
-├── speed_camera_web.py      # Web interface server
-├── config_manager.py        # Configuration management
-├── frontend/                # Web UI components
-├── models/                  # YOLO model files
-├── detections/              # Output images and CSV
-└── docker-compose.yml       # Container deployment
-```
-
-### Contributing
-
-1. Fork repository
-2. Create feature branch
-3. Implement changes with tests
-4. Submit pull request
-
-## Acknowledgments
-
-This project builds upon the excellent foundation provided by [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master). Key enhancements include:
-
-- Modern web interface with responsive design
-- GPU acceleration with YOLO integration
-- Advanced analytics and data visualization
-- Docker containerization
-- Mobile compatibility
-- Real-time streaming dashboard
 
 ## License
-
-MIT License - see LICENSE file for details.
-
-## Legal Disclaimer
-
-**⚠️ IMPORTANT LEGAL NOTICE ⚠️**
-
-This software is provided for **educational and research purposes only**. The publisher/maintainer(s) of this repository:
-
-- **Assume NO responsibility** for how this software is used
-- **Provide NO legal advice** regarding traffic monitoring laws
-- **Make NO warranties** about compliance with local regulations
-- **Accept NO liability** for any legal consequences of use
-
-### User Responsibilities
-
-**YOU are solely responsible for:**
-
-- ✅ Ensuring compliance with local, state, and federal laws
-- ✅ Obtaining necessary permits or authorizations
-- ✅ Respecting privacy rights and data protection laws
-- ✅ Using this software only where legally permitted
-- ✅ Consulting with legal counsel before deployment
-
-### Prohibited Uses
-
-This software **MUST NOT** be used for:
-
-- ❌ Unauthorized traffic enforcement on public roads
-- ❌ Violating privacy laws or regulations
-- ❌ Commercial speed enforcement without proper licensing
-- ❌ Any illegal surveillance activities
-
-### No Endorsement
-
-Publication of this code does **NOT constitute**:
-
-- Legal advice or guidance
-- Endorsement of any particular use case
-- Warranty of legal compliance
-- Authorization to use in any jurisdiction
-
-**USE AT YOUR OWN RISK AND LEGAL RESPONSIBILITY**
-
----
-
-**By downloading, using, or deploying this software, you acknowledge that you have read this disclaimer and agree to assume all legal responsibility for your use of this system.**
-
-## Support
-
-- **Issues**: GitHub Issues tracker
-- **Documentation**: Wiki pages
-- **Discussions**: GitHub Discussions
-
----
-
-**Note**: Ensure compliance with local traffic monitoring regulations and privacy laws when deploying this system.
+   Apache-2.0 license
+   Copyright [2025] [julbov]
+**Note**:This software is provided for educational and research purposes only. The author is not responsible for any misuse or violation of local laws. It is your responsibility to ensure legal compliance in your jurisdiction.
