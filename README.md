@@ -2,6 +2,9 @@
 
 A speed detection system with a real time web interface for speed and car monitoring with analytics. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
 
+##Contents
+[Detection Models](#yolo-models-for-object-detection)
+
 ## Introduction
 This system can detect and measure the speed of objects. It works by monitoring the rtsp stream and waiting for motion the speed is being measured but only logs when the object detection algorithm detects this too (can be changed in settings), an image is saved with the speed of the object, color, object type (eg, car, person, anything). This can be viewed on the detections page and on the analytics page which gives and comprehensive overview.
 
@@ -113,18 +116,14 @@ Most settings can be updated and change live like the detection lines, some sett
 - **Speed in mph**
 - **Minimum Speed/maximum Speed**: Filters unrealistically slow or fast speeds
 - **Min/max time difference**: The time a vehicle must be tracked before the system will calculate its speed.
-- **Min track length**: Minimum distance in pixels vehicle must travel
-- Track Counter
-  - Number of frames a car must travel
-  - 
+- **Min track length**: Minimum distance in pixels a object must travel
+- **Track Counter**: Number of frames a object must travel
+
 Higher values = more accurate speed (more data points), but slower detection
 Lower values = faster detection, but potentially less accurate
 
 
-1. Access Settings → Calibration Settings
-2. Measure a known object like the vehicle length [lookup vehicle dimensions]https://www.automobiledimension.com
-3. Count pixels for same object in camera view
-4. Set calibration values.
+
 
 ### Detection Zones
 
@@ -136,6 +135,13 @@ Configure detection area and speed lines:
 - **Detection Area Top, Bottom, left and right**: the detection area margins
 
 ### Calibration Settings
+
+
+
+**How to calibratie**
+1. Measure a known object like the vehicle length [lookup vehicle dimensions]https://www.automobiledimension.com
+2. Count pixels for same object in camera view
+3. Set calibration values.
 
 ### Output Settings
 - **Save Images** When disabled the detections still get recorded but no image is saved a placeholder is used instead of an image.
@@ -152,10 +158,10 @@ Configure detection area and speed lines:
 
 - Verify RTSP URL with VLC or similar player
 
-### Performance Optimization
+### Performance Optimizations
 
 - Use GPU if possible
-- Smaller YOLO model
+- Use smaller YOLO model
 
 
 
