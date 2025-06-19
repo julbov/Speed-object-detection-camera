@@ -46,8 +46,6 @@ Thumbs.db
 # Local files that shouldn't be in container
 detections/*
 !detections/.gitkeep
-models/*.pt
-!models/.gitkeep
 
 venv/
 env/
