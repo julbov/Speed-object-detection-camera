@@ -13,11 +13,9 @@ services:
     restart: unless-stopped
     command: >
       sh -c "
-        [ ! -f /configdata/config.json ] && cp /defaults/config.json /configdata/config.json || true &&
+        [ ! -f /configdata/config.json ] && cp /app/config.json /configdata/config.json || true &&
         cp /configdata/config.json /app/config.json &&
-        [ -z \"$(ls -A /app/models 2>/dev/null)\" ] && cp -r /defaults/models/* /app/models/ || true &&
-        [ -z \"$(ls -A /app/detections 2>/dev/null)\" ] && cp -r /defaults/detections/* /app/detections/ || true &&
-        python app.py
+        python speed_camera_web.py
       "
 
 volumes:
