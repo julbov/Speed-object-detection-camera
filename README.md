@@ -133,7 +133,7 @@ Configure detection area and speed lines:
 1. Measure a known object like the vehicle length. [Lookup vehicle dimensions](https://www.automobiledimension.com)
 2. Count pixels for the same object in the camera view.
 3. Set calibration values.  
-For a more in-depth guide on how to calibrate the camera, I recommend [this guide](https://github.com/pageauc/speed-camera/wiki/Calibrate-Camera-for-Distance).
+For a more in-depth guide on how to calibrate the camera, I recommend [this guide](https://github.com/pageauc/speed-camera/wiki/Calibrate-Camera-for-Distance) from @pageauc.
 
 ### Output Settings
 - **Save Images**: When disabled, the detections still get recorded but no image is saved. A placeholder is used instead of an image.
