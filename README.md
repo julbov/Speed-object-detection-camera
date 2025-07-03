@@ -1,6 +1,6 @@
 # Speed & Object Detection Camera
 
-A speed monitoring and object detection system with a real-time web interface. Built upon the core speed detection functionality of [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master).
+A speed monitoring and object detection system with a real-time web interface.
 
 ## Introduction
 This system detects and measures the speed of moving objects by watching the RTSP video stream for motion. Speed is only recorded when an object is also recognized by the detection algorithm (this can be changed in the settings). Each detection saves an image along with the object's speed, color, and type (e.g., car, person, etc.). These results are shown on the detections page and summarized on the analytics page for a clear overview.
@@ -151,6 +151,8 @@ For a more in-depth guide on how to calibrate the camera, I recommend [this guid
 
 ### Camera Connection
 - Verify RTSP URL with VLC or a similar player.
+
+Thanks to [pageauc/speed-camera](https://github.com/pageauc/speed-camera/tree/master) for the speed functionality.
 
 ## License
 Apache-2.0 license  
